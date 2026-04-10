@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
@@ -9,4 +11,26 @@ app.MapGet("/time", () => $"Время на сервере: {DateTime.Now}");
 
 app.MapGet("/hello/{name}", (string name) => $"Привет, {name}!");
 
+app.MapGet("/student", () =>
+new
+{
+    Name = "Алексей Назаренко и Коноплев Валентин",
+    Group = "ИСП-233",
+    Year = 18,
+    IsActive = true
+});
+app.MapGet("/subjects", () => new[]
+{
+"РПМ",
+"РМП",
+"ИСРПО",
+"СП"
+});
+app.MapGet("/product/{id}", (int id) => new Product(
+Id: id,
+Name: $"Товар #{id}",
+Price: id * 99.99m,
+InStock: id % 2 == 0
+));
 app.Run();
+record Product(int Id, string Name, decimal Price, bool InStock);
